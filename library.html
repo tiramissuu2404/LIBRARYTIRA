@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<title>Tira's Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400;1,700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --sunflower: #FFD700;
+  --sunflower-soft: #FFEC8B;
+  --stem-green: #2D5A27;
+  --earth-brown: #4B3621;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--sunflower);
+  color: var(--earth-brown);
+}
+
+/* --- LANDING PAGE --- */
+#landing {
+  height: 100vh;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+              url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2000');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  transition: 0.8s;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+}
+
+.sastra-quote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  margin-top: 10px;
+  max-width: 700px;
+}
+
+.website-purpose {
+  margin-top: 25px;
+  font-size: 0.95rem;
+  font-style: italic;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* --- MAIN INTERFACE --- */
+#mainApp {
+  display: none;
+  opacity: 0;
+  transition: 1s;
+  background: var(--sunflower);
+  min-height: 100vh;
+}
+
+.navbar {
+  padding: 20px 8%;
+  background: var(--earth-brown);
+  color: var(--sunflower);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page {
+  display: none;
+  padding: 40px 8%;
+}
+
+.page.active { display: block; }
+
+/* --- CARDS --- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: 0.3s;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.card.out-of-stock { filter: grayscale(1); opacity: 0.7; }
+
+/* --- DETAIL LAYOUT SIDE-BY-SIDE --- */
+.detail-wrapper {
+  display: flex;
+  gap: 40px;
+  background: var(--sunflower-soft);
+  padding: 40px;
+  border-radius: 30px;
+  border: 3px solid var(--earth-brown);
+}
+
+.detail-img-side { flex: 0 0 300px; }
+.detail-img-side img {
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 10px 10px 0px var(--stem-green);
+}
+
+.detail-info-side { flex: 1; }
+
+.blurb-scroll {
+  max-height: 250px;
+  overflow-y: auto;
+  margin: 20px 0;
+  background: rgba(255,255,255,0.6);
+  padding: 20px;
+  border-radius: 15px;
+  line-height: 1.8;
+  text-align: justify;
+  border: 1px solid var(--earth-brown);
+  font-size: 0.9rem;
+}
+
+.rules-box {
+  background: #fff3cd;
+  padding: 15px;
+  border-left: 5px solid #ffc107;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+}
+
+/* --- BUTTONS --- */
+button.primary {
+  background: var(--stem-green);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-back {
+  background: var(--earth-brown);
+  color: white;
+  padding: 8px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+/* --- NUMBER RATING (Pengganti Bintang) --- */
+.rating-number {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border: 2px solid var(--earth-brown);
+  border-radius: 50%;
+  margin-right: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.rating-number.selected {
+  background: var(--earth-brown);
+  color: var(--sunflower);
+}
+
+.review-item {
+  background: rgba(255,255,255,0.5);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border-bottom: 3px solid var(--earth-brown);
+}
+
+@media (max-width: 800px) {
+  .detail-wrapper { flex-direction: column; align-items: center; }
+  .detail-img-side { flex: 0 0 auto; width: 100%; max-width: 250px; }
+}
+</style>
+</head>
+<body>
+
+<section id="landing">
+  <h1 style="font-family: 'Playfair Display'; font-size: 5rem; margin-bottom: 0;">Tira's Library</h1>
+  <div class="sastra-quote">"Sebab dalam setiap lembar yang kau buka, ada semesta yang menanti untuk kau jelajahi."</div>
+  <div class="website-purpose">
+    Ruang kecil tempat aksara berteduh, dipinjamkan agar cerita tak membeku di rak kayu. <br>
+    Hadir untuk membagi napas literasi fisik bagi para pengembara ilmu.
+  </div>
+  <button class="primary" style="background: var(--sunflower); color: var(--earth-brown); margin-top: 30px;" onclick="startApp()">MASUK</button>
+</section>
+
+<div id="mainApp">
+  <nav class="navbar">
+    <h2 style="font-family: 'Playfair Display'; font-style: italic;">Tira's Library</h2>
+    <div style="font-size: 0.7rem; border: 1px solid; padding: 5px 15px; border-radius: 20px;">PEMINJAM</div>
+  </nav>
+
+  <div id="home" class="page active">
+    <h3 style="background: var(--earth-brown); color: white; display: inline-block; padding: 5px 20px; border-radius: 5px;">RAK BUKU</h3>
+    <div id="bookList" class="grid" style="margin-top:20px;"></div>
+  </div>
+
+  <div id="detail" class="page">
+    <div class="btn-back" onclick="goHome()">[ KEMBALI ]</div>
+    <div class="detail-wrapper">
+      <div class="detail-img-side"><img id="detailCover" src=""></div>
+      <div class="detail-info-side">
+        <h1 id="detailTitle" style="font-family: 'Playfair Display';"></h1>
+        <p id="detailAuthor" style="color: var(--stem-green); font-weight: bold;"></p>
+        <div class="blurb-scroll" id="detailBlurb"></div>
+        <div class="rules-box">
+          <b>Aturan Peminjaman:</b><br>
+          - Durasi Maksimal: <b>7 Hari</b><br>
+          - Denda Keterlambatan: <b>Rp 2.000 / Hari</b>
+        </div>
+        <input type="text" id="peminjamName" placeholder="Masukkan Nama Kamu" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #ddd;">
+        <button class="primary" style="width: 100%;" onclick="requestWhatsApp()">PINJAM VIA WHATSAPP</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="review" class="page">
+    <div class="btn-back" onclick="goHome()">[ BERANDA ]</div>
+    <div style="background:white; padding:40px; border-radius:20px;">
+      <h2 style="font-family: 'Playfair Display'; margin:0;">Berikan Skor Nilai</h2>
+      <p id="reviewFor" style="color: var(--stem-green); font-weight: bold; margin-bottom: 20px;"></p>
+      
+      <div id="numberInput">
+        <span class="rating-number" onclick="rate(1)">1</span>
+        <span class="rating-number" onclick="rate(2)">2</span>
+        <span class="rating-number" onclick="rate(3)">3</span>
+        <span class="rating-number" onclick="rate(4)">4</span>
+        <span class="rating-number" onclick="rate(5)">5</span>
+      </div>
+      
+      <textarea id="reviewText" style="width:100%; height:100px; padding:15px; border-radius:10px; border:1px solid #ddd; margin: 20px 0;" placeholder="Bagaimana kesanmu terhadap buku fisik ini?"></textarea>
+      <button class="primary" onclick="submitReview()">KIRIM ULASAN</button>
+      
+      <div id="reviewList" style="margin-top:30px;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let books = [
+  {id:0, judul:"Laskar Pelangi", penulis:"Andrea Hirata", cover:"laskarpelangi.jpg", blurb:"Begitu banyak hal menakjubkan yang terjadi dalam masa kecil para anggota Laskar Pelangi. Sebelas orang anak Melayu Belitong yang luar biasa ini tak menyerah walau keadaan tak bersimpati pada mereka...", isBorrowed: false},
+  {id:1, judul:"Bumi", penulis:"Tere Liye", cover:"bumi.jpg", blurb:"Namaku Raib, usiaku 15 tahun, kelas sepuluh...", isBorrowed: false},
+  {id:2, judul:"Dilan 1990", penulis:"Pidi Baiq", cover:"dilan1990.jpg", blurb:"Dia adalah Dilanku Tahun 1990 edisi 1 berwarna biru muda...", isBorrowed: false},
+  {id:3, judul:"Negeri 5 Menara", penulis:"Ahmad Fuadi", cover:"negeri5menara.jpg", blurb:"Alif lahir di pinggir Danau Maninjau dan tidak pernah menginjak tanah di luar ranah Minangkabau...", isBorrowed: false},
+  {id:4, judul:"Perahu Kertas", penulis:"Dee Lestari", cover:"perahukertas.jpg", blurb:"Namanya Kugy. Mungil, pengkhayal, dan berantakan...", isBorrowed: false},
+  {id:5, judul:"Laut Bercerita", penulis:"Leila S. Chudori", cover:"lautbercerita.jpg", blurb:"Laut Bercerita, novel terbaru Leila S. Chudori, bertutur tentang kisah keluarga yang kehilangan...", isBorrowed: false},
+  {id:6, judul:"Cantik Itu Luka", penulis:"Eka Kurniawan", cover:"cantikituluka.jpg", blurb:"Di akhir masa kolonial, seorang perempuan dipaksa menjadi pelacur...", isBorrowed: false},
+  {id:7, judul:"Bumi Manusia", penulis:"Pramoedya", cover:"bumimanusia.jpg", blurb:"Roman Tetralogi Buru mengambil latar belakang dan cikal bakal nation Indonesia di awal awal abad ke-20...", isBorrowed: false},
+  {id:8, judul:"Polaris Musim Dingin", penulis:"Alicia Lidwina", cover:"polarismusimdingin.jpg", blurb:"Seseorang mengirimkan tiket-tiket Shinkansen kepada Higashino Akari...", isBorrowed: false},
+  {id:9, judul:"Sisi Tergelap Surga", penulis:"Brian Khrisna", cover:"sisitergelapsurga.jpg", blurb:"Jakarta kerap menjadi pelabuhan bagi mereka yang datang membawa sekoper harapan...", isBorrowed: false}
+];
+
+let currentIdx = null;
+let currentRating = 0;
+
+function startApp() {
+  document.getElementById('landing').style.transform = 'translateY(-100%)';
+  setTimeout(() => {
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+    setTimeout(() => document.getElementById('mainApp').style.opacity = '1', 50);
+    render();
+  }, 800);
+}
+
+function render() {
+  let html = "";
+  books.forEach((b, i) => {
+    html += `
+      <div class="card ${b.isBorrowed ? 'out-of-stock' : ''}">
+        <img src="${b.cover}">
+        <h4 style="margin:10px 0 5px; font-family:'Playfair Display';">${b.judul}</h4>
+        <p style="font-size:0.8rem; margin:0; color:#666;">${b.penulis}</p>
+        <p style="font-weight:bold; color:${b.isBorrowed ? 'red' : 'green'}; font-size:0.7rem;">
+          ${b.isBorrowed ? 'DIPINJAM' : 'TERSEDIA'}
+        </p>
+        <button onclick="openDetail(${i})" style="width:100%; margin-top:10px; cursor:pointer;">Cek Detail</button>
+      </div>
+    `;
+  });
+  document.getElementById("bookList").innerHTML = html;
+}
+
+function openDetail(i) {
+  currentIdx = i;
+  const b = books[i];
+  document.getElementById("detailTitle").innerText = b.judul;
+  document.getElementById("detailAuthor").innerText = "Karya: " + b.penulis;
+  document.getElementById("detailBlurb").innerText = b.blurb;
+  document.getElementById("detailCover").src = b.cover;
+  document.getElementById("peminjamName").value = "";
+  showPage("detail");
+}
+
+function requestWhatsApp() {
+  const name = document.getElementById("peminjamName").value;
+  const book = books[currentIdx].judul;
+  if(!name) return alert("Masukkan namamu dulu ya!");
+
+  const message = `Halo Tira! 👋%0A%0A` +
+                  `Saya: *${name}*%0A` +
+                  `Ingin meminjam buku: *${book}*%0A` +
+                  `--------------------------%0A` +
+                  `Sesuai aturan: %0A` +
+                  `- Batas pinjam 7 hari%0A` +
+                  `- Bersedia denda jika lewat batas.%0A%0A` +
+                  `Mohon informasikan kapan saya bisa ambil bukunya ya!`;
+
+  books[currentIdx].isBorrowed = true;
+  render();
+
+  window.open(`https://wa.me/6285889184005?text=${message}`, '_blank');
+  document.getElementById("reviewFor").innerText = "Ulasan untuk: " + book;
+  showPage("review");
+}
+
+function rate(n) {
+  currentRating = n;
+  document.querySelectorAll('.rating-number').forEach((s, i) => {
+    s.classList.toggle('selected', i < n);
+  });
+}
+
+function submitReview() {
+  let txt = document.getElementById("reviewText").value;
+  if(currentRating === 0) return alert("Pilih angka skor dulu!");
+  
+  let item = `
+    <div class="review-item">
+      <small style="color:var(--stem-green)">Buku: <b>${books[currentIdx].judul}</b></small><br>
+      <span style="color:var(--earth-brown); font-size:1.1rem; font-weight:bold;">Skor: ${currentRating} / 5</span>
+      <p style="margin:5px 0 0 0;">${txt}</p>
+    </div>`;
+  
+  document.getElementById("reviewList").innerHTML = item + document.getElementById("reviewList").innerHTML;
+  document.getElementById("reviewText").value = "";
+  rate(0);
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function goHome() { showPage("home"); }
+</script>
+</body>
+</html>
